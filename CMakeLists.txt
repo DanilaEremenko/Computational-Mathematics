@@ -17,10 +17,10 @@ set(LIBRARIES
 add_library(lib STATIC ${LIBRARIES})
 
 
-add_executable(firstLab ../FirstLab/FirstLab.cpp)
-add_executable(secondLab ../SecondLab/SecondLab.cpp)
-add_executable(thirdLab ../ThirdLab/ThirdLab.cpp)
-add_executable(coursach ../Coursach/Coursach/Coursach.cpp)
+add_executable(firstLab FirstLab/FirstLab.cpp)
+add_executable(secondLab SecLab/SecondLab.cpp)
+add_executable(thirdLab ThirdLab/ThirdLab.cpp)
+add_executable(coursach Coursach/Coursach.cpp)
 
 
 target_link_libraries(firstLab lib)
