@@ -1,41 +1,41 @@
 #include <iostream>
 #include <math.h>
-#include "Calc/lib/rkf45.cpp"
-#include "Calc/lib/quanc8.cpp"
-#include "Calc/lib/fmin.cpp"
+#include "../Calc/headers/rkf45.h"
+#include "../Calc/headers/quanc8.h"
+#include "../Calc/headers/fmin.h"
 
 using namespace ::std;
 
-//Исходная таблица
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 int start = 36, xout = 46;
 double x[] = {0.0, 0.303, -0.465, 0.592, -0.409, 0.164, 0.180};
 double t[] = {0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4};
 const int nodeDigit = 7;
 
 
-//Параметры курсача
-const double M = 1;//Масса маятника
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+const double M = 1;//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 const double g = 9.81;
-double L;//Начальная длина пружины
+double L;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 const double divisorOfL = 0.90452424;
-double K;//Жесткость пружины
+double K;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 double y[4];// y[0] = y, y[1] = y', y[2] = z, y[3] = z'
-double dy[4];//Дифференциалы
+double dy[4];//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 
-//Параметры QUANC8
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ QUANC8
 const int down = 0, up = 1;
 const double abserr = 1.0e-12, relerr = 0;
 double errest, flag;
 int nofun;
 
-//Параметры RKF45
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ RKF45
 double h = 0.4, rBottom = 0, rUp = 2.4, tOut = 0, re = 1e-8, ae = 1e-8;
 int iflag = 1, n = 4;
 double work[27];
 int iwork[30];
 
-//Параметры FMIN
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ FMIN
 double ERROR_FMIN = 0.1;
 int flag_fmin = 1;
 double K1;
@@ -44,13 +44,13 @@ double K1;
 char line[] = "--------------------------------------------------\n";
 
 
-//Подынтегральная функция L
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ L
 double funL(double x) {
     return cos(x * x);
 }
 
 
-//Приведенная система ДУ
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
 void fun(double t, double *y, double *dy) {
     dy[0] = y[1];
     dy[1] = -K / M * y[0] - g * (1 - cos(y[2])) + (L + y[0]) * (y[3] * y[3]);
@@ -59,7 +59,7 @@ void fun(double t, double *y, double *dy) {
 }
 
 
-//Установка параметров RKF45
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ RKF45
 void setUpRKF45param() {
     iflag = 1;
     rBottom = 0;
@@ -70,7 +70,7 @@ void setUpRKF45param() {
 }
 
 
-//Поиск K при помощи fmin, расчет и вывод погрешности
+//пїЅпїЅпїЅпїЅпїЅ K пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ fmin, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 double calcFun(double k) {
     K = k;
     double sum = 0;
@@ -93,14 +93,14 @@ double calcFun(double k) {
 
 
 int main() {
-    //Расчитываем и выводим значение L
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ L
     quanc8(funL, down, up, abserr, relerr, &L, &errest, &nofun, &flag);
     L = L / divisorOfL;
     printf("L = ");
     printf("%.10f\n", L);
     printf(line);
 
-    //Находим K при помощи fmin
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ K пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ fmin
     K = fmin(start, xout, calcFun, ERROR_FMIN, K1, flag_fmin);
     printf("Answer:\nK = %.2f\n", K);
 

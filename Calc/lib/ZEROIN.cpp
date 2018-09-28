@@ -1,7 +1,7 @@
 #include <iostream>
 #include <assert.h>
-#include "SPLINES.H"
-#include "lagrange.h"
+#include "../headers/spline.h"
+#include "../headers/lagrange.h"
 
 using namespace std;
 
